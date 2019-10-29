@@ -9,19 +9,25 @@ name = "StartState"
 image = None
 UI = None
 sun_time = 0.0
+money = 0
+moveS = 0
+choice = 1
 
-choice=0
-flower=[]
+
+sflower = []
+pflower = []
+wflower = []
+flower= [sflower, pflower, wflower]
+
 sun=[]
-ombie=[]
+Zombie=[]
 bullet=[]
 
 def enter():
-    global image, UI , ombie
+    global image, UI, Zombie
     image = load_image('Tutorial_map.png')
     UI = load_image('board.png')
-    ombie.append(zombie.Zombie())
-
+    Zombie.append(zombie.Zombie())
 
 def exit():
     global image, UI
@@ -29,23 +35,41 @@ def exit():
     del(UI)
 
 
-
 def update():
-    global sun_time, sun, zombie
-    for i in flower:
-        i.shoot(bullet)
+    global sun_time, sun, bullet, moveS
+    for i in pflower:
+        for j in Zombie:
+            if i.y <= j.y + 72 and i.y>= j.y - 72:
+                i.shoot(bullet)
     for i in bullet:
         i.move()
-    #for i in flower:
-   #     i.makeSun(sun)
+    for i in sun:
+        i.update()
 
-    #if (sun_time > 1.0):
-        #sun.append(sunflower.Sun())
-        #sun_time = 0
-    for i in ombie:
-        i.move()
+    for i in sflower:
+        i.makeSun(sun)
+    for i in Zombie:
+        for j in flower:
+            for w in j:
+                if w.x >= i.x:
+                    i.moveS = 1
+
+        if i.moveS == 0:
+            i.move()
+        else:
+            pass
+
+
+    for i in Zombie:
+        for j in bullet:
+            if j.x + 28 >= i.x:
+                bullet.remove(j)
+
+    if (sun_time > 1.0):
+        sun.append(sunflower.Sun(0,0))
+        sun_time = 0
     delay(0.01)
-    #sun_time += 0.01
+    sun_time += 0.01
     pass
 
 def draw():
@@ -54,28 +78,49 @@ def draw():
     image.clip_draw(225 , 0, 800, 600, 700, 300, 1400, 600)
     UI.clip_draw(0,0,557,109,(557//2),600-(109//2))
 
-    #self.image.clip_draw(self.frame * 100, 0, 100, 100, self.x, self.y)
+    # 9  5
+    # 1260 500
+    for i in range(9):
+        for j in range(5):
+            draw_rectangle(50+ 140*(i), 25+ 100*j, 50+ 140*(i+1), 25+ 100*(j+1))
     for i in flower:
+        for j in i:
+            j.draw()
+    for i in Zombie:
         i.draw()
     for i in sun:
         i.draw()
-    for i in ombie:
-        i.draw()
     for i in bullet:
         i.draw()
+    #draw_rectangle(50, 25, 1310, 525)
+
     update_canvas()
 
 
 def handle_events():
-    global choice
+    global choice, sun, sun_count
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
             game_framework.quit()
-
+        elif event.type == SDL_KEYDOWN:
+            if event.key == SDLK_q:
+                choice = 1
+            elif event.key == SDLK_w:
+                choice = 2
+            elif event.key == SDLK_e:
+                choice = 3
         elif event.type == SDL_MOUSEBUTTONDOWN:
-            flower.append(sunflower.Peashooter(event.x, event.y))
-            #flower.append(sunflower.Sunflower(event.x, event.y))
+            for i in sun:
+                if event.x >= i.x - 39 and event.x <=i.x + 39  \
+                    and 600 - event.y >= i.high - 39 and 600 - event.y <= i.high + 39:
+                    sun.remove(i)
+            if choice == 1:
+                sflower.append(sunflower.Sunflower(event.x, event.y))
+            elif choice == 2:
+                pflower.append(sunflower.Peashooter(event.x, event.y))
+            elif choice == 3:
+                wflower.append(sunflower.Wallnut(event.x, event.y))
 
 
 def pause(): pass
