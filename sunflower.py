@@ -6,6 +6,7 @@ import random
 class Sunflower:
     def __init__(self,x,y):
         self.x,self.y = x, 600-y
+        self.HP = 5
         self.image = load_image('SunFlower_0.png')
         self.time=0.0
 
@@ -16,7 +17,7 @@ class Sunflower:
         self.image.draw(self.x,self.y)
 
     def makeSun(self,sun):
-        if self.time > 10:
+        if self.time > 30:
             sun.append(Sun(self.x, self.y))
             self.time=0.0
         self.time+=0.1
@@ -47,6 +48,9 @@ class Peashooter:
     def __init__(self,x,y):
         self.x, self.y = x, 600 - y
         self.image = load_image('Peashooter_0.png')
+        self.damage = 1
+        self.HP = 5
+        self.shootS = 0
         self.time=0.0
     def shoot(self,bullet):
         if self.time > 10:
@@ -70,6 +74,7 @@ class Bullet:
 class Wallnut:
     def __init__(self, x, y):
         self.x, self.y = x, 600 - y
+        self.HP = 10
         self.image = load_image('WallNut_0.png')
 
     def draw(self):

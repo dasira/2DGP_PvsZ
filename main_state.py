@@ -24,10 +24,10 @@ Zombie=[]
 bullet=[]
 
 def enter():
-    global image, UI, Zombie
+    global image, UI
     image = load_image('Tutorial_map.png')
     UI = load_image('board.png')
-    Zombie.append(zombie.Zombie())
+
 
 def exit():
     global image, UI
@@ -39,8 +39,12 @@ def update():
     global sun_time, sun, bullet, moveS
     for i in pflower:
         for j in Zombie:
-            if i.y <= j.y + 72 and i.y>= j.y - 72:
-                i.shoot(bullet)
+            if j.y <= 400 and j.y>= 250:
+                i.shootS = 1
+            else:
+                i.shootS = 0
+        if i.shootS == 1:
+            i.shoot(bullet)
     for i in bullet:
         i.move()
     for i in sun:
@@ -57,15 +61,25 @@ def update():
         if i.moveS == 0:
             i.move()
         else:
-            pass
-
+            for j in flower:
+                for w in j:
+                    if (i.Atime > 1.0):
+                        w.HP -= i.damage
+                        i.Atime = 0
+                        if w.HP <= 0:
+                            j.remove(w)
+                            i.moveS = 0
+            i.Atime += 0.01
 
     for i in Zombie:
         for j in bullet:
             if j.x + 28 >= i.x:
+                i.HP -= 1
                 bullet.remove(j)
+                if i.HP == 0:
+                    Zombie.remove(i)
 
-    if (sun_time > 1.0):
+    if (sun_time > 3.0):
         sun.append(sunflower.Sun(0,0))
         sun_time = 0
     delay(0.01)
@@ -110,6 +124,12 @@ def handle_events():
                 choice = 2
             elif event.key == SDLK_e:
                 choice = 3
+            elif event.key == SDLK_a:
+                choice = 4
+            elif event.key ==SDLK_s:
+                choice = 5
+            elif event.key == SDLK_d:
+                choice = 6
         elif event.type == SDL_MOUSEBUTTONDOWN:
             for i in sun:
                 if event.x >= i.x - 39 and event.x <=i.x + 39  \
@@ -121,6 +141,12 @@ def handle_events():
                 pflower.append(sunflower.Peashooter(event.x, event.y))
             elif choice == 3:
                 wflower.append(sunflower.Wallnut(event.x, event.y))
+            elif choice == 4:
+                Zombie.append(zombie.Zombie())
+            elif choice == 5:
+                Zombie.append(zombie.CheadZombie())
+            elif choice == 6:
+                Zombie.append(zombie.BheadZombie())
 
 
 def pause(): pass
