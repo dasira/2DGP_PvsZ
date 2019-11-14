@@ -1,12 +1,15 @@
 from pico2d import *
 import random
 
+
+#각 객체마다 수업에서 배운 상태 추가해서 구현하는 것이 더 좋을 것 같음
 #숫자 줘서 구분합시다
 
 class Sunflower:
     def __init__(self,x,y):
         self.x,self.y = x, 600-y
         self.HP = 5
+        self.damageS = 0
         self.image = load_image('SunFlower_0.png')
         self.time=0.0
 
@@ -49,6 +52,7 @@ class Peashooter:
         self.x, self.y = x, 600 - y
         self.image = load_image('Peashooter_0.png')
         self.damage = 1
+        self.damageS = 0
         self.HP = 5
         self.shootS = 0
         self.time=0.0
@@ -75,6 +79,7 @@ class Wallnut:
     def __init__(self, x, y):
         self.x, self.y = x, 600 - y
         self.HP = 10
+        self.damageS = 0
         self.image = load_image('WallNut_0.png')
 
     def draw(self):
