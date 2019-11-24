@@ -12,7 +12,7 @@ class Zombie:
         self.speed = 1
         self.moveS = 0
 
-    def move(self):
+    def update(self):
         self.x -= self.speed
 
     def draw(self):
