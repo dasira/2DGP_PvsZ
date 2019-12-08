@@ -7,7 +7,7 @@ import random
 #각 객체마다 수업에서 배운 상태 추가해서 구현하는 것이 더 좋을 것 같음
 #숫자 줘서 구분합시다
 
-# Boy Run Speed
+# Boy Run   Speed
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
 RUN_SPEED_KMPH = 20.0  # Km / Hour
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
