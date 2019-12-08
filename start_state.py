@@ -21,7 +21,7 @@ def exit():
 
 
 def update():
-        #game_framework.change_state(main_state)
+        #game_framework.change_state(main_sta te)
 
     pass
 
