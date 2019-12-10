@@ -565,13 +565,11 @@ class stage01:
 
         if (event.type == SDL_KEYDOWN):
             if (event.key == SDLK_1):
-                self.add_event(PRE02)
-            if (event.key == SDLK_2):
                 self.add_event(MAIN)
-            if (event.key == SDLK_3):
+            if (event.key == SDLK_2):
                 global Zombies, Zombie_Count
-                Zombies[0].x = 100
-            if (event.key == SDLK_4):
+                Zombies[0].x = 50
+            if (event.key == SDLK_3):
                 Zombie_Count = 0
 
         if(self.cur_state == Stage_state and event.type == SDL_MOUSEBUTTONDOWN):
